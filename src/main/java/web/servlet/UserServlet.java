@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.User;
 import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
+import utils.RRHolder;
 import web.vo.ResultVo;
 
 import javax.servlet.ServletException;
@@ -23,15 +24,12 @@ public class UserServlet extends BaseServlet {
 
     public void currentname(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            String name = cookie.getName();
-            if(name!=null && name.equals("name")){
-                String value = cookie.getValue();
-                success(value,response);
-                return;
-            }
+        Object name1 = request.getSession().getAttribute("name");
+        if(name1!=null  ){
+            success(name1.toString());
+            return;
         }
-        error("未登录",response);
+         error("未登录");
     }
 
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, InvocationTargetException, IllegalAccessException {
@@ -41,13 +39,16 @@ public class UserServlet extends BaseServlet {
         UserService userService = new UserService();
         User uu = userService.getUser(user);
          if(uu!=null){
-            Cookie cookie = new Cookie("name",uu.getName());
-            response.addCookie(cookie);
-            success("登录成功",response);
+             request.getSession().setAttribute("name",uu.getName());
+             success("登录成功");
         }else{
-            error("登录失败",response);
+            error("登录失败");
         }
-        
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, InvocationTargetException, IllegalAccessException {
+        request.getSession().invalidate();
+        success("退出成功");
     }
 
     public void regist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, InvocationTargetException, IllegalAccessException {
@@ -57,43 +58,40 @@ public class UserServlet extends BaseServlet {
         UserService userService = new UserService();
         Boolean register = userService.register(user);
         if(register){
-            success("注册成功",response);
+            success("注册成功");
         }else{
-            error("注册失败",response);
+            error("注册失败");
         }
     }
 
-    public void success(HttpServletResponse response){
-        success(null ,response);
+    public void success(){
+        success(null);
     }
-    public void error(HttpServletResponse response){
-        error(null ,response);
+    public void error(){
+        error(null);
     }
-    public void success(String value  , HttpServletResponse response){
+    public void success(String value){
         ResultVo resultVo = new ResultVo();
         resultVo.setCode(ResultVo.CODE_SUCCESS);
         resultVo.setData(value);
-        ObjectMapper mappper = new ObjectMapper();
+        ajaxJson(resultVo);
+    }
+    public void ajaxJson(Object resultVo){
         String jsonStr = null;
         try {
+            ObjectMapper mappper = new ObjectMapper();
             jsonStr = mappper.writeValueAsString(resultVo);
+            HttpServletResponse response = RRHolder.getResponse();
             response.getWriter().print(jsonStr);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void error(String value,HttpServletResponse response){
+    public void error(String value ){
         ResultVo resultVo = new ResultVo();
         resultVo.setCode(ResultVo.CODE_FAILED);
         resultVo.setData(value);
-        ObjectMapper mappper = new ObjectMapper();
-        String jsonStr = null;
-        try {
-            jsonStr = mappper.writeValueAsString(resultVo);
-            response.getWriter().print(jsonStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ajaxJson(resultVo);
     }
 
 }

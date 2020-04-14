@@ -13,11 +13,26 @@ import java.util.List;
 
 public class DataSourceUtil {
     private static DataSource ds = new ComboPooledDataSource();
+    private  static Connection conn = null;
      public static DataSource getDataSource(){
         return ds;
     }
-    public static Connection getConn() throws SQLException {
-         return ds.getConnection();
+    public static Connection getConn()   {
+        try {
+            conn = ds.getConnection();
+            return conn;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void close(){
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

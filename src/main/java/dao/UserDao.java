@@ -23,6 +23,7 @@ public class UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        DataSourceUtil.close();
         return false;
     }
 
@@ -39,6 +40,7 @@ public class UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        DataSourceUtil.close();
         return null;
     }
 }

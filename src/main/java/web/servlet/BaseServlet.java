@@ -15,8 +15,7 @@ public class BaseServlet extends HttpServlet {
         String md = request.getParameter("md");
         Method declaringClass = null;
         try {
-            System.out.println(md);
-            Class<? extends BaseServlet> aClass = this.getClass();
+             Class<? extends BaseServlet> aClass = this.getClass();
             Method method = aClass.getDeclaredMethod(md,HttpServletRequest.class,HttpServletResponse.class);
             method.setAccessible(true);
             method.invoke(this,request,response);

@@ -19,7 +19,6 @@ public class Filter implements javax.servlet.Filter {
         String origin = request.getHeader("Origin");
         response.setHeader("Access-Control-Allow-Origin",origin);//动态支持跨域
         response.setHeader("Access-Control-Allow-Credentials","true");
-        System.out.println("Filter.doFilter");
         chain.doFilter(req, resp);
     }
 
