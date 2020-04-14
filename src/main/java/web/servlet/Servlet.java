@@ -20,6 +20,7 @@ public class Servlet extends HttpServlet {
                 String value = cookie.getValue();
                 ResultVo resultVo = new ResultVo();
                 response.getWriter().print(value);
+
             }
         }
 
