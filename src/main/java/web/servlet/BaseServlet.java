@@ -39,6 +39,7 @@ public class BaseServlet extends HttpServlet {
         resultVo.setCode(ResultVo.CODE_SUCCESS);
         resultVo.setData(value);
         ajaxJson(resultVo);
+        return;
     }
     public void ajaxJson(Object resultVo){
         String jsonStr = null;
@@ -56,6 +57,7 @@ public class BaseServlet extends HttpServlet {
         resultVo.setCode(ResultVo.CODE_FAILED);
         resultVo.setData(value);
         ajaxJson(resultVo);
+        return;
     }
 
 

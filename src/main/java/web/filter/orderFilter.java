@@ -21,9 +21,10 @@ public class orderFilter implements Filter {
 
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
-        Users user = (Users) request.getSession().getAttribute("user");
+        String user = (String) request.getSession().getAttribute("name");
         if(user == null){
             error("请登录");
+            return;
         }
         chain.doFilter(req, resp);
     }
@@ -49,6 +50,6 @@ public class orderFilter implements Filter {
         resultVo.setCode(ResultVo.CODE_NOLOGIN);
         resultVo.setData(value);
         ajaxJson(resultVo);
-    }
+     }
 
 }

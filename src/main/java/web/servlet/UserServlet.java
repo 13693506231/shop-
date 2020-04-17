@@ -33,6 +33,7 @@ public class UserServlet extends BaseServlet {
         UserService userService = new UserService();
         Users uu = userService.getUser(user);
          if(uu!=null){
+             request.getSession().setAttribute("user",uu);
              request.getSession().setAttribute("name",uu.getName());
              success("登录成功");
         }else{

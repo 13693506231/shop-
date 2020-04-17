@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Orders {
     private String oid;
@@ -11,6 +12,17 @@ public class Orders {
     private String name;
     private String telephone;
     private int uid;
+    private List<OrderItem>   orderItem;
+
+
+
+    public void setOrderItem(List<OrderItem>  orderItem) {
+        this.orderItem = orderItem;
+    }
+
+    public List<OrderItem>  getOrderItem() {
+        return orderItem;
+    }
 
     public Orders(String oid, Date ordertime, double total, int state, String address, String name, String telephone, int uid) {
         this.oid = oid;

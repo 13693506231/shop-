@@ -4,13 +4,21 @@ public class OrderItem {
     private int count;
     private double subtotal;
     private int pid;
-    private int oid;
+    private String oid;
+    private Goods goods;
 
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
 
     public OrderItem() {
     }
 
-    public OrderItem(int count, double subtotal, int pid, int oid) {
+    public OrderItem(int count, double subtotal, int pid, String oid) {
         this.count = count;
         this.subtotal = subtotal;
         this.pid = pid;
@@ -29,7 +37,7 @@ public class OrderItem {
         this.pid = pid;
     }
 
-    public void setOid(int oid) {
+    public void setOid(String oid) {
         this.oid = oid;
     }
 
@@ -45,7 +53,7 @@ public class OrderItem {
         return pid;
     }
 
-    public int getOid() {
+    public String getOid() {
         return oid;
     }
 }
