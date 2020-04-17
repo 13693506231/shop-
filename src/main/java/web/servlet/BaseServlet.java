@@ -1,5 +1,9 @@
 package web.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import utils.RRHolder;
+import web.vo.ResultVo;
+
 import javax.servlet.ServletException;
  import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +26,36 @@ public class BaseServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void success(){
+        success(null);
+    }
+    public void error(){
+        error(null);
+    }
+    public void success(Object value){
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(ResultVo.CODE_SUCCESS);
+        resultVo.setData(value);
+        ajaxJson(resultVo);
+    }
+    public void ajaxJson(Object resultVo){
+        String jsonStr = null;
+        try {
+            ObjectMapper mappper = new ObjectMapper();
+            jsonStr = mappper.writeValueAsString(resultVo);
+            HttpServletResponse response = RRHolder.getResponse();
+            response.getWriter().print(jsonStr);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void error(Object value ){
+        ResultVo resultVo = new ResultVo();
+        resultVo.setCode(ResultVo.CODE_FAILED);
+        resultVo.setData(value);
+        ajaxJson(resultVo);
     }
 
 

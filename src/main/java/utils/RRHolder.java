@@ -15,7 +15,7 @@ public class RRHolder {
         return requestThreadLocal.get();
     }
 
-    public static void  setresponse(HttpServletResponse response) {
+    public static void  setResponse(HttpServletResponse response) {
         responseThreadLocal.set(response);
     }
 

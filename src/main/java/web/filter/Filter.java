@@ -1,5 +1,7 @@
 package web.filter;
 
+import utils.RRHolder;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,8 @@ public class Filter implements javax.servlet.Filter {
         String origin = request.getHeader("Origin");
         response.setHeader("Access-Control-Allow-Origin",origin);//动态支持跨域
         response.setHeader("Access-Control-Allow-Credentials","true");
+        RRHolder.setResponse(response);
+        RRHolder.setRequest(request);
         chain.doFilter(req, resp);
     }
 

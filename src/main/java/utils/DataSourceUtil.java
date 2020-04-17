@@ -12,14 +12,18 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class DataSourceUtil {
-    private static DataSource ds = new ComboPooledDataSource();
+    private static ComboPooledDataSource dataSource;
+
+    static{
+        dataSource = new ComboPooledDataSource();
+    }
     private  static Connection conn = null;
      public static DataSource getDataSource(){
-        return ds;
+        return dataSource;
     }
     public static Connection getConn()   {
         try {
-            conn = ds.getConnection();
+            conn = dataSource.getConnection();
             return conn;
         } catch (SQLException e) {
             e.printStackTrace();

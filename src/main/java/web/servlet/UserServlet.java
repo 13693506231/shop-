@@ -1,22 +1,16 @@
 package web.servlet;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import domain.User;
+import domain.Users;
 import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
-import utils.RRHolder;
-import web.vo.ResultVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/user")
@@ -33,11 +27,11 @@ public class UserServlet extends BaseServlet {
     }
 
     public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, InvocationTargetException, IllegalAccessException {
-         User user = new User();
+         Users user = new Users();
          Map<String, String[]> parameterMap = request.getParameterMap();
          BeanUtils.populate(user,parameterMap);
         UserService userService = new UserService();
-        User uu = userService.getUser(user);
+        Users uu = userService.getUser(user);
          if(uu!=null){
              request.getSession().setAttribute("name",uu.getName());
              success("登录成功");
@@ -52,7 +46,7 @@ public class UserServlet extends BaseServlet {
     }
 
     public void regist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, InvocationTargetException, IllegalAccessException {
-        User user = new User();
+        Users user = new Users();
         Map<String, String[]> parameterMap = request.getParameterMap();
         BeanUtils.populate(user,parameterMap);
         UserService userService = new UserService();
@@ -64,34 +58,6 @@ public class UserServlet extends BaseServlet {
         }
     }
 
-    public void success(){
-        success(null);
-    }
-    public void error(){
-        error(null);
-    }
-    public void success(String value){
-        ResultVo resultVo = new ResultVo();
-        resultVo.setCode(ResultVo.CODE_SUCCESS);
-        resultVo.setData(value);
-        ajaxJson(resultVo);
-    }
-    public void ajaxJson(Object resultVo){
-        String jsonStr = null;
-        try {
-            ObjectMapper mappper = new ObjectMapper();
-            jsonStr = mappper.writeValueAsString(resultVo);
-            HttpServletResponse response = RRHolder.getResponse();
-            response.getWriter().print(jsonStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public void error(String value ){
-        ResultVo resultVo = new ResultVo();
-        resultVo.setCode(ResultVo.CODE_FAILED);
-        resultVo.setData(value);
-        ajaxJson(resultVo);
-    }
+
 
 }
